@@ -1,31 +1,35 @@
-# Live Federation Proof — Operator B
+# Prova de Federação Real — Operador B
 
-## Goal
+## Objetivo
 
-Prove that two project-owned, repository-independent Machine Bridge operators can exchange ownership-bound evidence without collapsing trust, execution, and reconciliation boundaries.
+Provar que dois operadores da Machine Bridge, pertencentes ao projeto e independentes em nível de repositório, conseguem trocar evidências vinculadas à propriedade da execução sem misturar as fronteiras de confiança, execução e reconciliação.
 
-## Required gates
+## Gates obrigatórios
 
-1. Operator A explicitly trusts Operator B identity.
-2. Operator B explicitly trusts only the expected Operator A identity for the probe.
-3. Requests and evidence are signed and ownership-bound.
-4. Replay of an already consumed request/evidence fails closed or is idempotent.
-5. No arbitrary shell or natural-language-to-execution path is introduced.
-6. Remote acceptance is not treated as completion.
-7. Completion is reconciled at origin only from verified remote evidence/result hash.
-8. Missing/timeout evidence never proves non-execution.
-9. Remote rejection never triggers automatic cross-peer failover.
-10. The first probe uses a bounded non-destructive capability (worker.ping/equivalent).
+1. O Operador A confia explicitamente na identidade do Operador B.
+2. O Operador B confia explicitamente apenas na identidade esperada do Operador A para a prova.
+3. Requisições e evidências são assinadas e vinculadas ao ownership.
+4. O replay de uma requisição ou evidência já consumida falha de forma fechada ou é tratado de maneira idempotente.
+5. Nenhum shell arbitrário ou caminho de linguagem natural para execução é introduzido.
+6. Aceitação remota não é tratada como conclusão.
+7. A conclusão só é reconciliada na origem a partir de evidência remota verificada e do hash do resultado.
+8. Evidência ausente ou timeout nunca prova que não houve execução.
+9. Rejeição remota nunca aciona failover automático entre peers.
+10. A primeira prova utiliza uma capacidade limitada e não destrutiva (`worker.ping` ou equivalente).
 
-## Evidence to preserve
+## Evidências a preservar
 
-- A request/probe identifier and hashes, not private payloads;
-- selected Operator B identity;
-- accepted/rejected/completed signed evidence;
-- origin reconciliation result;
-- CI/run identifiers relevant to the proof;
-- replay/idempotency outcome.
+- identificador da requisição/prova e hashes, sem payloads privados;
+- identidade do Operador B selecionado;
+- evidências assinadas de `accepted`, `rejected` e/ou `completed`;
+- resultado da reconciliação na origem;
+- identificadores de CI/runs relevantes à prova;
+- resultado do teste de replay/idempotência.
 
-## Current state
+## Estado atual
 
-Operator B surface initialized. Deployment/runtime transport is not yet installed. No live federation claim may be made until all gates above are exercised across the repository boundary.
+A superfície do Operador B foi inicializada. O runtime/transporte de implantação ainda não está instalado. Nenhuma afirmação de federação real concluída pode ser feita até que os gates acima sejam exercitados atravessando efetivamente a fronteira entre os repositórios.
+
+## Convenção documental
+
+Documentação voltada a pessoas é mantida em português (pt-BR). Identificadores de código, campos de protocolo, schemas e nomes técnicos permanecem em inglês quando necessário para compatibilidade.
