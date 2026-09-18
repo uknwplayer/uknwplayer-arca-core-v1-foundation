@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "operatorId": "arca-federation-operator-b",
+  "role": "federation-peer",
+  "repository": "uknwplayer/uknwplayer-arca-core-v1-foundation",
+  "canonicalProject": "uknwplayer/arca-core-v1-foundation",
+  "trustMode": "explicit",
+  "automaticFailover": false,
+  "acceptsArbitraryShell": false,
+  "status": "bootstrap"
+}

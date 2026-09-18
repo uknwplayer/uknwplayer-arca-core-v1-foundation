@@ -1,0 +1,12 @@
+{
+  "name": "arca-machine-bridge-operator-b",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Superfície independente do Operador B para a prova de federação real da Machine Bridge",
+  "engines": {"node": ">=22.18"},
+  "scripts": {
+    "check": "node scripts/check-operator.mjs",
+    "test": "node --test tests/*.test.mjs"
+  }
+}
