@@ -1,0 +1,88 @@
+{
+  "format": "arca-federation-result-v1",
+  "protocolVersion": 3,
+  "requestId": "fed-live-1789728131421",
+  "jobId": "fed-live-1789728131421-job",
+  "operatorId": "arca-federation-operator-b",
+  "status": "completed",
+  "action": "worker.ping",
+  "output": {
+    "ok": true,
+    "echo": "ARCA A -> B"
+  },
+  "requestHash": "b78e9db6c7152746e046735bde43002496ccf4f9ac8a9e5638e4e6cc87699c94",
+  "resultHash": "801d27c19a80a453e7294ce1372146a67a2df664cb025eaa457aaaf402fcad8a",
+  "evidence": {
+    "processor": "operator-b-mesh-adapter-v1",
+    "signedStatementHash": "ed122bc51ba2d9a4d6e915acef54403ee087df182d95dcc38f4222398ff0b846",
+    "signerFingerprint": "2782565b8ef8aae6461f1de746d7869fde83a2ae0998695a5ec7e6c3ed13ffff"
+  },
+  "canonicalEvidence": {
+    "accepted": {
+      "format": "arca-mesh-signed-statement-v1",
+      "version": 1,
+      "domain": "arca.mesh.request-evidence.v1",
+      "signer": {
+        "format": "arca-mesh-node-identity-v1",
+        "version": 1,
+        "algorithm": "Ed25519",
+        "nodeId": "arca-federation-operator-b",
+        "identityId": "ed25519:16d18f18eb75454e10736958f27fe5b9dc500d82f55b4b6fd4b34ea091cc4b3c",
+        "keyFingerprint": "16d18f18eb75454e10736958f27fe5b9dc500d82f55b4b6fd4b34ea091cc4b3c",
+        "publicKeySpki": "MCowBQYDK2VwAyEA/mmKtFJk16dXNlpVnPt1lLtrr+qfRvhGJ1I1/s6fkmg=",
+        "descriptorHash": "bb46f1ee8c90b24a1e7c5009f1ef86e1001e5483f2e0306c97c18219660d22a6"
+      },
+      "nonce": "fed-live-1789728131421_accepted",
+      "issuedAt": "2026-09-18T10:42:23.301Z",
+      "expiresAt": "2026-09-18T10:47:23.301Z",
+      "payloadHash": "b7b79c8de41935005ce9b98dee62951086960b421e6597eff6ae0f7d2cad6cde",
+      "payload": {
+        "format": "arca-remote-request-evidence-v1",
+        "version": 1,
+        "stage": "accepted",
+        "nodeId": "arca-federation-operator-b",
+        "requestId": "fed-live-1789728131421",
+        "jobId": "fed-live-1789728131421-job",
+        "payloadHash": "b78e9db6c7152746e046735bde43002496ccf4f9ac8a9e5638e4e6cc87699c94",
+        "ownerBindingHash": "ce441a11725472eaf031f07ee7d8d7878c12c4ccb963261ca1e54e677cc4c227",
+        "evidenceAt": "2026-09-18T10:42:23.301Z"
+      },
+      "signature": "V_FEu2aWM8u-asc308TMhyl_xSCWkJbmC9HlEYTIqGC6r1s4bIyB4SAMfsVPEX5w37yTLjGHz5w9P4vXye1xAA",
+      "statementHash": "8ed3429f2daf0e49829da85ab062294f0ce29b1c597b7f0fe3e7504ab9c4defc"
+    },
+    "completed": {
+      "format": "arca-mesh-signed-statement-v1",
+      "version": 1,
+      "domain": "arca.mesh.request-evidence.v1",
+      "signer": {
+        "format": "arca-mesh-node-identity-v1",
+        "version": 1,
+        "algorithm": "Ed25519",
+        "nodeId": "arca-federation-operator-b",
+        "identityId": "ed25519:16d18f18eb75454e10736958f27fe5b9dc500d82f55b4b6fd4b34ea091cc4b3c",
+        "keyFingerprint": "16d18f18eb75454e10736958f27fe5b9dc500d82f55b4b6fd4b34ea091cc4b3c",
+        "publicKeySpki": "MCowBQYDK2VwAyEA/mmKtFJk16dXNlpVnPt1lLtrr+qfRvhGJ1I1/s6fkmg=",
+        "descriptorHash": "bb46f1ee8c90b24a1e7c5009f1ef86e1001e5483f2e0306c97c18219660d22a6"
+      },
+      "nonce": "fed-live-1789728131421_completed",
+      "issuedAt": "2026-09-18T10:42:23.301Z",
+      "expiresAt": "2026-09-18T10:47:23.301Z",
+      "payloadHash": "f84bc9d11b029d638d7b0739781a11895abf13f72829eddac61144b21c5c7652",
+      "payload": {
+        "format": "arca-remote-request-evidence-v1",
+        "version": 1,
+        "stage": "completed",
+        "nodeId": "arca-federation-operator-b",
+        "requestId": "fed-live-1789728131421",
+        "jobId": "fed-live-1789728131421-job",
+        "payloadHash": "b78e9db6c7152746e046735bde43002496ccf4f9ac8a9e5638e4e6cc87699c94",
+        "ownerBindingHash": "ce441a11725472eaf031f07ee7d8d7878c12c4ccb963261ca1e54e677cc4c227",
+        "evidenceAt": "2026-09-18T10:42:23.301Z",
+        "resultHash": "801d27c19a80a453e7294ce1372146a67a2df664cb025eaa457aaaf402fcad8a",
+        "acceptedStatementHash": "8ed3429f2daf0e49829da85ab062294f0ce29b1c597b7f0fe3e7504ab9c4defc"
+      },
+      "signature": "sK-MDulQQdAFleTnlqjTaLP8DRbNt2IbI5nYr3Wl8QUu2rUqLGQhQdR5vq_KPcoBtxneHm2t5knHyOInIcc2AQ",
+      "statementHash": "78da49dfcf9f8fc2c19c7d670828ac01a4007be27b0e2d756833247a6d43557f"
+    }
+  }
+}
