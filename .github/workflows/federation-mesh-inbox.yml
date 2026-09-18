@@ -2,7 +2,8 @@ name: Federação Mesh — Inbox
 on:
   push:
     branches: [main]
-    paths: ['federation/mesh-inbox/*.json']
+    paths:
+      - 'federation/mesh-inbox/*.json'
 permissions:
   contents: write
 concurrency:
@@ -14,8 +15,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
-        with: {node-version: '22.18'}
-      - name: Processar statements Mesh pendentes\n        env:\n          ARCA_FEDERATION_B_PRIVATE_KEY_PEM: ${{ secrets.ARCA_FEDERATION_B_PRIVATE_KEY_PEM }}\n          ARCA_FEDERATION_REQUIRE_SIGNED_RESULT: '1'
+        with:
+          node-version: '22.18'
+      - name: Processar statements Mesh pendentes
+        env:
+          ARCA_FEDERATION_B_PRIVATE_KEY_PEM: ${{ secrets.ARCA_FEDERATION_B_PRIVATE_KEY_PEM }}
+          ARCA_FEDERATION_REQUIRE_SIGNED_RESULT: '1'
         shell: bash
         run: |
           set -euo pipefail
