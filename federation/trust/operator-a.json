@@ -1,6 +1,6 @@
 {
   "operatorId": "arca-federation-operator-a",
   "algorithm": "Ed25519",
-  "keyFingerprint": "06034ea21de97bd299ecf58f838b9d7c5a84c13e09fb6c30da660a116d38a874",
-  "publicKeySpki": "MCowBQYDK2VwAyEAcy8QaZV5X5HjxLWG2Bwld0IDZuX7Sy+/4GxgPF4r0H0="
+  "keyFingerprint": "cba42b6fe57898adec469ead13328888f9ba3a8222936e7e18bb39960f23660d",
+  "publicKeySpki": "MCowBQYDK2VwAyEAeGfXisxK4GLjKJMXxzju1S07/0+Ox1XRgLlqGAzuDWI="
 }
