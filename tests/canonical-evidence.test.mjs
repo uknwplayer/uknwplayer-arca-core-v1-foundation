@@ -1,0 +1,20 @@
+import test from "node:test";
+import assert from "node:assert/strict";
+import {generateKeyPairSync,sign} from "node:crypto";
+import {createCanonicalCompletionEvidence,federationProbePayloadHash} from "../src/federation/canonical-evidence.mjs";
+import {verifyCanonicalMeshProbe} from "../src/federation/mesh-adapter.mjs";
+const H="b".repeat(64);
+test("B emits ownership-bound accepted and completed canonical evidence",async()=>{
+ const {publicKey,privateKey}=generateKeyPairSync("ed25519");
+ const spki=Buffer.from(publicKey.export({type:"spki",format:"der"})).toString("base64");
+ const probe={format:"arca-federation-probe-v1",protocolVersion:3,requestId:"req-canonical-1",jobId:"job-canonical-1",originOperatorId:"arca-federation-operator-a",targetOperatorId:"arca-federation-operator-b",action:"worker.ping",params:{echo:"x"},ownerBindingHash:H};
+ probe.payloadHash=federationProbePayloadHash(probe);
+ const result={status:"completed",resultHash:"c".repeat(64)};
+ const evidence=await createCanonicalCompletionEvidence({probe,result,publicKeySpki:spki,signBytes:b=>sign(null,b,privateKey),now:new Date("2026-09-18T08:00:00Z")});
+ assert.equal(evidence.accepted.payload.stage,"accepted");
+ assert.equal(evidence.completed.payload.stage,"completed");
+ assert.equal(evidence.accepted.payload.ownerBindingHash,H);
+ assert.equal(evidence.completed.payload.acceptedStatementHash,evidence.accepted.statementHash);
+ assert.equal(evidence.completed.payload.resultHash,result.resultHash);
+ assert.equal(evidence.completed.signer.keyFingerprint,evidence.accepted.signer.keyFingerprint);
+});
