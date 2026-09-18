@@ -1,0 +1,37 @@
+name: Federação Mesh — Inbox
+on:
+  push:
+    branches: [main]
+    paths: ['federation/mesh-inbox/*.json']
+permissions:
+  contents: write
+concurrency:
+  group: federation-mesh-inbox
+  cancel-in-progress: false
+jobs:
+  process:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: '22.18'}
+      - name: Processar statements Mesh pendentes
+        shell: bash
+        run: |
+          set -euo pipefail
+          shopt -s nullglob
+          for f in federation/mesh-inbox/*.json; do
+            out="federation/outbox/$(basename "$f")"
+            [ -e "$out" ] && continue
+            node src/federation/process-mesh-inbox.mjs "$f"
+          done
+      - name: Persistir evidência produzida
+        shell: bash
+        run: |
+          set -euo pipefail
+          git add federation/outbox
+          git diff --cached --quiet && exit 0
+          git config user.name "arca-federation-operator-b"
+          git config user.email "actions@users.noreply.github.com"
+          git commit -m "chore(federation): persistir resultado Mesh"
+          git push
