@@ -1,20 +1,24 @@
-# ARCA Machine Bridge — Federation Operator B
+# ARCA Machine Bridge — Operador B da Federação
 
-This repository is a project-owned independent surface for the ARCA / Machine Bridge live federation proof.
+Este repositório é uma superfície independente, pertencente ao projeto ARCA, destinada à prova de federação real do ARCA / Machine Bridge.
 
-## Role
+## Papel
 
-- Operator: B
-- Purpose: independent federation peer / proof surface
-- Canonical ARCA repository: `uknwplayer/arca-core-v1-foundation`
-- Trust model: explicit, fail-closed, no automatic cross-peer failover
+- Operador: B
+- Finalidade: peer independente da federação e superfície de prova
+- Repositório canônico do ARCA: `uknwplayer/arca-core-v1-foundation`
+- Modelo de confiança: explícito, fail-closed e sem failover automático entre peers
 
-## Security boundary
+## Limite de segurança
 
-This repository must not contain API keys, tokens, passwords, plaintext credentials, private investigation payloads, or unnecessary personal data.
+Este repositório não deve conter API keys, tokens, senhas, credenciais em texto claro, payloads privados de investigações ou dados pessoais desnecessários.
 
-Federation acceptance does not imply execution authorization. Missing or delayed evidence is not proof of non-execution. Remote rejection does not authorize automatic failover.
+Aceitação federada não implica autorização de execução. Evidência ausente ou atrasada não prova que uma execução não ocorreu. Rejeição remota não autoriza failover automático.
 
-## Bootstrap state
+## Estado de inicialização
 
-The repository is intentionally initialized as a minimal independent operator surface. Machine Bridge deployment/proof artifacts will be added through reviewed changes and CI before the first live A ↔ B probe.
+O repositório foi inicializado intencionalmente como uma superfície mínima e independente do Operador B. Os artefatos de implantação e prova da Machine Bridge serão adicionados por mudanças revisadas e CI antes da primeira prova real A ↔ B.
+
+## Convenção documental
+
+A documentação destinada a pessoas deve ser escrita em português (pt-BR). Identificadores de código, schemas, campos de protocolo e nomes técnicos podem permanecer em inglês quando isso preservar compatibilidade e clareza técnica.
