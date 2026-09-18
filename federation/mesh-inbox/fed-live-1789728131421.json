@@ -1,0 +1,35 @@
+{
+  "format": "arca-mesh-signed-statement-v1",
+  "version": 1,
+  "domain": "arca.mesh.request-evidence.v1",
+  "signer": {
+    "format": "arca-mesh-node-identity-v1",
+    "version": 1,
+    "algorithm": "Ed25519",
+    "nodeId": "arca-federation-operator-a",
+    "identityId": "ed25519:2782565b8ef8aae6461f1de746d7869fde83a2ae0998695a5ec7e6c3ed13ffff",
+    "keyFingerprint": "2782565b8ef8aae6461f1de746d7869fde83a2ae0998695a5ec7e6c3ed13ffff",
+    "publicKeySpki": "MCowBQYDK2VwAyEAYIFfFtyt4PFgs/mpnP/lQbemPc11FFJe3T5bXnyeJo4=",
+    "descriptorHash": "95fee7de0f7cd844df3d9aef52a9b8b21ad2f10e5afaae9787ee113871ad1db8"
+  },
+  "nonce": "xc-fMuKtu4B_WbJEk9i2qzJd",
+  "issuedAt": "2026-09-18T10:42:11.492Z",
+  "expiresAt": "2026-09-18T10:47:11.492Z",
+  "payloadHash": "d53b2bb2ee5faec2ae546e33e1893726c13730a49008f0b4d1ee35dbf803ca87",
+  "payload": {
+    "format": "arca-federation-probe-v1",
+    "protocolVersion": 3,
+    "requestId": "fed-live-1789728131421",
+    "jobId": "fed-live-1789728131421-job",
+    "originOperatorId": "arca-federation-operator-a",
+    "targetOperatorId": "arca-federation-operator-b",
+    "action": "worker.ping",
+    "params": {
+      "echo": "ARCA A -> B"
+    },
+    "payloadHash": "b78e9db6c7152746e046735bde43002496ccf4f9ac8a9e5638e4e6cc87699c94",
+    "ownerBindingHash": "ce441a11725472eaf031f07ee7d8d7878c12c4ccb963261ca1e54e677cc4c227"
+  },
+  "signature": "DBEEQb6A9w2yDrzQwoTjFsCPmbQrWnpnuAdPrHDQ2YME0Y2xxy7fEPIKcckqAE3EPL7gU5qKIibNW5JOgewuCQ",
+  "statementHash": "ed122bc51ba2d9a4d6e915acef54403ee087df182d95dcc38f4222398ff0b846"
+}
