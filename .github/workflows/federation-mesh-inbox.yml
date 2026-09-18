@@ -28,7 +28,7 @@ jobs:
           for f in federation/mesh-inbox/*.json; do
             out="federation/outbox/$(basename "$f")"
             [ -e "$out" ] && continue
-            node src/federation/process-mesh-inbox.mjs "$f"
+            node src/federation/process-mesh-inbox.mjs "$f" || continue
           done
       - name: Persistir evidência produzida
         shell: bash
