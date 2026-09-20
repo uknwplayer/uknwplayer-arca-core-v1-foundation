@@ -12,14 +12,29 @@ function nonce(requestId,stage){return (requestId+"_"+stage).replace(/[^A-Za-z0-
 function common(probe,stage,at){
   return {format:FORMAT,version:1,stage,nodeId:"arca-federation-operator-b",requestId:id(probe.requestId,"requestId"),jobId:id(probe.jobId,"jobId"),payloadHash:hash(probe.payloadHash,"payloadHash"),ownerBindingHash:hash(probe.ownerBindingHash,"ownerBindingHash"),evidenceAt:new Date(at).toISOString()};
 }
-export async function createCanonicalCompletionEvidence({probe,result,publicKeySpki,signBytes,now=new Date()}={}){
+function signerFor({publicKeySpki,signBytes}={}){
+  return createExternalMeshSigner({nodeId:"arca-federation-operator-b",publicKeySpki,signBytes});
+}
+
+export async function createCanonicalAcceptedEvidence({probe,publicKeySpki,signBytes,now=new Date()}={}){
+  const signer=signerFor({publicKeySpki,signBytes});
+  const acceptedPayload=common(probe,"accepted",now);
+  return signer.signEvidence(acceptedPayload,{nonce:nonce(probe.requestId,"accepted"),issuedAt:now});
+}
+
+export async function createCanonicalCompletedEvidence({probe,result,accepted,publicKeySpki,signBytes,now=new Date()}={}){
   if(!result||result.status!=="completed")throw new Error("completed federation result required");
   hash(result.resultHash,"resultHash");
-  const signer=createExternalMeshSigner({nodeId:"arca-federation-operator-b",publicKeySpki,signBytes});
-  const acceptedPayload=common(probe,"accepted",now);
-  const accepted=await signer.signEvidence(acceptedPayload,{nonce:nonce(probe.requestId,"accepted"),issuedAt:now});
+  if(!accepted||typeof accepted.statementHash!=="string")throw new Error("accepted federation evidence required");
+  hash(accepted.statementHash,"acceptedStatementHash");
+  const signer=signerFor({publicKeySpki,signBytes});
   const completedPayload={...common(probe,"completed",now),resultHash:result.resultHash,acceptedStatementHash:accepted.statementHash};
-  const completed=await signer.signEvidence(completedPayload,{nonce:nonce(probe.requestId,"completed"),issuedAt:now});
+  return signer.signEvidence(completedPayload,{nonce:nonce(probe.requestId,"completed"),issuedAt:now});
+}
+
+export async function createCanonicalCompletionEvidence({probe,result,publicKeySpki,signBytes,now=new Date()}={}){
+  const accepted=await createCanonicalAcceptedEvidence({probe,publicKeySpki,signBytes,now});
+  const completed=await createCanonicalCompletedEvidence({probe,result,accepted,publicKeySpki,signBytes,now});
   return Object.freeze({accepted,completed});
 }
 export function federationProbePayloadHash({requestId,jobId,action,params}={}){

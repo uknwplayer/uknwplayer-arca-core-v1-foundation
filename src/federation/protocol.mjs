@@ -10,6 +10,7 @@ export const FEDERATION_RESULT_FORMAT="arca-federation-result-v1";
 export const MEGA_BRAIN_TASK_FORMAT="arca-mega-brain-task-v1";
 export const MEGA_BRAIN_DISPATCH_RESULT_FORMAT="arca-mega-brain-dispatch-result-v1";
 export const MEGA_BRAIN_DISPATCH_ACTION="mega-brain.dispatch";
+export const MEGA_BRAIN_RESULT_SUBMIT_ACTION="mega-brain.result.submit";
 
 function stable(value){
   if(Array.isArray(value)) return value.map(stable);
@@ -61,6 +62,24 @@ export function normalizeMegaBrainTask(value){
 function assertMegaBrainParams(params){
   exactKeys(params,new Set(["task"]),"mega brain params");
   return normalizeMegaBrainTask(params.task);
+}
+const HASH=/^[a-f0-9]{64}$/;
+function hash(value,label){if(typeof value!=="string"||!HASH.test(value))throw new Error("invalid "+label);return value;}
+export function normalizeMegaBrainResultSubmission(params){
+  exactKeys(params,new Set([
+    "originalRequestId","originalJobId","originalPayloadHash",
+    "ownerBindingHash","acceptedStatementHash","megaBrainOutput"
+  ]),"mega brain result submission");
+  if(!plain(params.megaBrainOutput))throw new Error("mega brain output object required");
+  if(params.megaBrainOutput.format!==MEGA_BRAIN_DISPATCH_RESULT_FORMAT||params.megaBrainOutput.version!==1)throw new Error("unsupported submitted mega brain output");
+  return Object.freeze({
+    originalRequestId:safe(params.originalRequestId,"originalRequestId"),
+    originalJobId:safe(params.originalJobId,"originalJobId"),
+    originalPayloadHash:hash(params.originalPayloadHash,"originalPayloadHash"),
+    ownerBindingHash:hash(params.ownerBindingHash,"ownerBindingHash"),
+    acceptedStatementHash:hash(params.acceptedStatementHash,"acceptedStatementHash"),
+    megaBrainOutput:params.megaBrainOutput
+  });
 }
 
 function normalizeClaim(value){
@@ -136,6 +155,8 @@ export function assertProbe(value){
     if(!plain(value.params??{}))throw new Error("invalid ping params");
   }else if(value.action===MEGA_BRAIN_DISPATCH_ACTION){
     assertMegaBrainParams(value.params);
+  }else if(value.action===MEGA_BRAIN_RESULT_SUBMIT_ACTION){
+    normalizeMegaBrainResultSubmission(value.params);
   }else{
     throw new Error("federation action not allowed");
   }
@@ -190,7 +211,9 @@ export function createMegaBrainResult(probe,{operatorId="arca-federation-operato
 
 export function createFederationResult(probe,options={}){
   assertProbe(probe);
-  return probe.action==="worker.ping"?createPingResult(probe,options):createMegaBrainResult(probe,options);
+  if(probe.action==="worker.ping")return createPingResult(probe,options);
+  if(probe.action===MEGA_BRAIN_DISPATCH_ACTION)return createMegaBrainResult(probe,options);
+  throw new Error("federation result creation unsupported for action: "+probe.action);
 }
 
 export function verifyFederationResult(value,probe){

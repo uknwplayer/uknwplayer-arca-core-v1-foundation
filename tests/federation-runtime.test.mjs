@@ -3,7 +3,10 @@ import assert from "node:assert/strict";
 import {FederationOperatorB} from "../src/federation/operator-b.mjs";
 import {
   MEGA_BRAIN_DISPATCH_ACTION,
+  MEGA_BRAIN_RESULT_SUBMIT_ACTION,
+  assertProbe,
   normalizeMegaBrainDispatchOutput,
+  normalizeMegaBrainResultSubmission,
   sha256,
   verifyFederationResult,
   verifyPingResult
@@ -134,4 +137,46 @@ test("Mega Brain probe rejeita target lógico adulterado no resultado",async()=>
   const body={...result,output:badOutput};delete body.resultHash;
   const bad={...body,resultHash:sha256(body)};
   assert.throws(()=>verifyFederationResult(bad,p),/output node mismatch|result hash mismatch/);
+});
+
+test("submissão de resultado Vince é uma ação fechada e assinável separadamente",()=>{
+  const original=vinceProbe();
+  const params={
+    originalRequestId:original.requestId,
+    originalJobId:original.jobId,
+    originalPayloadHash:original.payloadHash,
+    ownerBindingHash:"b".repeat(64),
+    acceptedStatementHash:"c".repeat(64),
+    megaBrainOutput:vinceOutput()
+  };
+  const body={
+    requestId:"mbvince-result-001",
+    jobId:"mbvince-result-job-001",
+    action:MEGA_BRAIN_RESULT_SUBMIT_ACTION,
+    params
+  };
+  const submission={
+    format:"arca-federation-probe-v1",
+    protocolVersion:3,
+    originOperatorId:"arca-federation-operator-a",
+    targetOperatorId:"arca-federation-operator-b",
+    ...body,
+    payloadHash:sha256(body)
+  };
+  assert.equal(assertProbe(submission),true);
+  const normalized=normalizeMegaBrainResultSubmission(params);
+  assert.equal(normalized.originalRequestId,original.requestId);
+  assert.equal(normalized.megaBrainOutput.nodeId,"node.vince");
+});
+test("submissão de resultado rejeita binding hash malformado",()=>{
+  const original=vinceProbe();
+  const params={
+    originalRequestId:original.requestId,
+    originalJobId:original.jobId,
+    originalPayloadHash:original.payloadHash,
+    ownerBindingHash:"not-a-hash",
+    acceptedStatementHash:"c".repeat(64),
+    megaBrainOutput:vinceOutput()
+  };
+  assert.throws(()=>normalizeMegaBrainResultSubmission(params),/invalid ownerBindingHash/);
 });

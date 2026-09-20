@@ -1,41 +1,30 @@
-# Federated Vince Node v0.1 — Operator B
+# Federated Vince Node v0.1 — Public Gateway / Private Executor
 
-This branch composes two already independently proven boundaries:
+Operator B is intentionally public. Vince Negra is private.
 
-1. signed explicit-trust A↔B federation;
-2. the real private Vince Mega Brain cognitive action.
+GitHub does not allow a public workflow to consume a private action, so the integration uses a two-phase delegation protocol instead of exposing Vince.
 
-For a task assigned to `node.vince`, Operator B is no longer allowed to generate its deterministic proof fixture.
+## Phase 1 — authorization
 
-The live path is:
+1. Operator A signs a `mega-brain.dispatch` request assigned to `node.vince`.
+2. Public Operator B verifies A against pinned trust.
+3. B validates the closed Mega Brain task and allowed Vince capabilities.
+4. B signs canonical `accepted` evidence.
+5. B persists `arca-federated-vince-authorization-v1`.
 
-```text
-signed request from A
-        |
-        v
-verify pinned A identity
-        |
-        v
-validate arca-mega-brain-task-v1
-        |
-        v
-private Vince action
-        |
-        v
-real Vince Python process / v0.23 core
-        |
-        v
-arca-mega-brain-dispatch-result-v1
-        |
-        v
-B revalidates mission/task/node/result schema
-        |
-        v
-B signs accepted + completed evidence
-```
+## Phase 2 — private cognition and completion
 
-The private Vince action is pinned to green commit:
+1. Private Operator A verifies B's signed acceptance.
+2. A executes the private Vince action.
+3. A signs a second `mega-brain.result.submit` statement binding:
+   - original request/job;
+   - original payload hash;
+   - original owner binding;
+   - B's accepted statement hash;
+   - Vince's closed result.
+4. B verifies the signed result submission.
+5. B revalidates the result against the original task and requires a `vince://cognitive-trace/` evidence source.
+6. B signs canonical `completed` evidence bound to the exact result hash.
+7. A verifies B and reconciles original ownership to completed.
 
-`1c79e237081769422dc9462335d14a1ad7fb9245`
-
-No arbitrary executable or action name is supplied by the federated task.
+At no point does the public B repository receive Vince source code or credentials.

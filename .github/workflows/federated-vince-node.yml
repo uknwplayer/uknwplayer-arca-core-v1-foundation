@@ -1,4 +1,4 @@
-name: Federated Vince Node — Operator B
+name: Federated Vince Gateway — Operator B
 
 on:
   push:
@@ -12,42 +12,32 @@ permissions:
   contents: write
 
 concurrency:
-  group: federated-vince-node-b
+  group: federated-vince-gateway-b
   cancel-in-progress: false
 
 jobs:
-  process:
+  gateway:
     runs-on: ubuntu-latest
-    timeout-minutes: 8
+    timeout-minutes: 6
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: '22.18'
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
-      - name: Verify signed A request and materialize closed Vince task
-        id: select
-        run: node src/federation/select-signed-vince-task.mjs vince-task.json
-      - name: Execute real Vince private cognitive action
-        uses: uknwplayer/vince-negra/.github/actions/mega-brain-node@1c79e237081769422dc9462335d14a1ad7fb9245
-        with:
-          task-file: vince-task.json
-          result-file: vince-result.json
-      - name: Revalidate Vince result and create signed federation completion
+      - name: Run Operator B regression suite
+        run: npm test
+      - name: Verify signed requests and advance federated Vince state
         env:
           ARCA_FEDERATION_B_PRIVATE_KEY_PEM: ${{ secrets.ARCA_FEDERATION_B_PRIVATE_KEY_PEM }}
-          ARCA_FEDERATION_REQUIRE_SIGNED_RESULT: '1'
-          ARCA_FEDERATED_MEGA_BRAIN_RESULT_FILE: vince-result.json
-        run: node src/federation/process-mesh-inbox.mjs "${{ steps.select.outputs.inbox }}"
-      - name: Persist signed Vince federation result
+        run: node src/federation/process-federated-vince-gateway.mjs
+      - name: Persist authorization/completion evidence
         shell: bash
         run: |
           set -euo pipefail
-          git add federation/outbox
+          mkdir -p federation/vince-authorizations federation/outbox
+          git add federation/vince-authorizations federation/outbox
           git diff --cached --quiet && exit 0
           git config user.name "arca-federation-operator-b"
           git config user.email "actions@users.noreply.github.com"
-          git commit -m "federation: persist signed Vince cognitive result"
+          git commit -m "federation: advance signed Vince delegation"
           git push
