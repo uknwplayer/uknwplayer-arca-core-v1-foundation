@@ -1,0 +1,47 @@
+{
+  "format": "arca-mesh-signed-statement-v1",
+  "version": 1,
+  "domain": "arca.mesh.request-evidence.v1",
+  "signer": {
+    "format": "arca-mesh-node-identity-v1",
+    "version": 1,
+    "algorithm": "Ed25519",
+    "nodeId": "arca-federation-operator-a",
+    "identityId": "ed25519:2782565b8ef8aae6461f1de746d7869fde83a2ae0998695a5ec7e6c3ed13ffff",
+    "keyFingerprint": "2782565b8ef8aae6461f1de746d7869fde83a2ae0998695a5ec7e6c3ed13ffff",
+    "publicKeySpki": "MCowBQYDK2VwAyEAYIFfFtyt4PFgs/mpnP/lQbemPc11FFJe3T5bXnyeJo4=",
+    "descriptorHash": "95fee7de0f7cd844df3d9aef52a9b8b21ad2f10e5afaae9787ee113871ad1db8"
+  },
+  "nonce": "8Fr4vwdKMoW2iQlqqPaaiZXk",
+  "issuedAt": "2026-09-20T06:41:05.525Z",
+  "expiresAt": "2026-09-20T06:51:05.525Z",
+  "payloadHash": "55105106e5aff326ed791bb847fcabeaf810a53786f0856d35d8e2ce57191cc3",
+  "payload": {
+    "format": "arca-federation-probe-v1",
+    "protocolVersion": 3,
+    "requestId": "mbfed-35494854249-1",
+    "jobId": "mbfed-35494854249-1-job",
+    "originOperatorId": "arca-federation-operator-a",
+    "targetOperatorId": "arca-federation-operator-b",
+    "action": "mega-brain.dispatch",
+    "params": {
+      "task": {
+        "format": "arca-mega-brain-task-v1",
+        "version": 1,
+        "missionId": "MBFED-mbfed-35494854249-1",
+        "taskId": "T-mbfed-35494854249-1",
+        "objective": "Execute bounded Mega Brain task through signed A-to-B federation.",
+        "requiredCapabilities": [
+          "federation-proof"
+        ],
+        "dependencies": [],
+        "assignedNodeId": "arca-federation-operator-b",
+        "createdFromResultId": null
+      }
+    },
+    "payloadHash": "7626e7dbcd4118d32ca3ac10ed74cdf82f8ce6470b6e691c5121213a012d3a96",
+    "ownerBindingHash": "7f18ac327ac9e547c7c8a6f102c16d22ea8626ef1a39ac4bd4c5fd9820ff0b80"
+  },
+  "signature": "e8sKm0XwC9L1ezm9eYVFjPC22CLxTjwM5Gs2GgnWTeBaGBpRVqKeYmh54EfZghnOSYC_bJEI85GOtIG3RO7PDA",
+  "statementHash": "4d46f8fba4137a9e379d235fac67107f886c53d0ff0e62500e769c3ab68b1453"
+}

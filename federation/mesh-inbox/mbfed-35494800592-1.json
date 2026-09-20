@@ -1,0 +1,47 @@
+{
+  "format": "arca-mesh-signed-statement-v1",
+  "version": 1,
+  "domain": "arca.mesh.request-evidence.v1",
+  "signer": {
+    "format": "arca-mesh-node-identity-v1",
+    "version": 1,
+    "algorithm": "Ed25519",
+    "nodeId": "arca-federation-operator-a",
+    "identityId": "ed25519:2782565b8ef8aae6461f1de746d7869fde83a2ae0998695a5ec7e6c3ed13ffff",
+    "keyFingerprint": "2782565b8ef8aae6461f1de746d7869fde83a2ae0998695a5ec7e6c3ed13ffff",
+    "publicKeySpki": "MCowBQYDK2VwAyEAYIFfFtyt4PFgs/mpnP/lQbemPc11FFJe3T5bXnyeJo4=",
+    "descriptorHash": "95fee7de0f7cd844df3d9aef52a9b8b21ad2f10e5afaae9787ee113871ad1db8"
+  },
+  "nonce": "xbZj71ZgL-2jlQiCLdBezvP_",
+  "issuedAt": "2026-09-20T06:39:51.422Z",
+  "expiresAt": "2026-09-20T06:49:51.422Z",
+  "payloadHash": "80733186610aef99c426835a67fa1bfec412923f4714bb9847bd5d75b86f1fb7",
+  "payload": {
+    "format": "arca-federation-probe-v1",
+    "protocolVersion": 3,
+    "requestId": "mbfed-35494800592-1",
+    "jobId": "mbfed-35494800592-1-job",
+    "originOperatorId": "arca-federation-operator-a",
+    "targetOperatorId": "arca-federation-operator-b",
+    "action": "mega-brain.dispatch",
+    "params": {
+      "task": {
+        "format": "arca-mega-brain-task-v1",
+        "version": 1,
+        "missionId": "MBFED-mbfed-35494800592-1",
+        "taskId": "T-mbfed-35494800592-1",
+        "objective": "Execute bounded Mega Brain task through signed A-to-B federation.",
+        "requiredCapabilities": [
+          "federation-proof"
+        ],
+        "dependencies": [],
+        "assignedNodeId": "arca-federation-operator-b",
+        "createdFromResultId": null
+      }
+    },
+    "payloadHash": "020765a3c907f9eda19dfbf45e9c8fdde282a4e4d3ff9fd19d571748650c9185",
+    "ownerBindingHash": "4b8ce59b2b14166c638f114ca0a39aef1e926ca4b69e82e69d0b0990fb802c3d"
+  },
+  "signature": "ZFVQwPyuXrqJAOC5Weq5quE68MfTIalvWY7AREP79jbOEeOxFJkgGhPi-Mf9sCDRQ9u_FKqwbJe4mQ1CquN0AQ",
+  "statementHash": "c4cfb5a193ca7a11ea737b9cf65a982a5f574baeb24fb35003acae17f4ad60f0"
+}
