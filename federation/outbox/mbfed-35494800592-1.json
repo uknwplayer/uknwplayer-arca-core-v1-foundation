@@ -1,0 +1,112 @@
+{
+  "format": "arca-federation-result-v1",
+  "protocolVersion": 3,
+  "requestId": "mbfed-35494800592-1",
+  "jobId": "mbfed-35494800592-1-job",
+  "operatorId": "arca-federation-operator-b",
+  "status": "completed",
+  "action": "mega-brain.dispatch",
+  "output": {
+    "format": "arca-mega-brain-dispatch-result-v1",
+    "version": 1,
+    "resultId": "R-T-mbfed-35494800592-1-operator-b",
+    "missionId": "MBFED-mbfed-35494800592-1",
+    "taskId": "T-mbfed-35494800592-1",
+    "nodeId": "arca-federation-operator-b",
+    "claims": [
+      {
+        "claimId": "C-T-mbfed-35494800592-1-operator-b",
+        "text": "Federated Operator B processed the bounded Mega Brain task."
+      }
+    ],
+    "evidence": [
+      {
+        "evidenceId": "E-T-mbfed-35494800592-1-operator-b",
+        "sourceRef": "federation://operator-b/T-mbfed-35494800592-1",
+        "contentDigest": "sha256:06d68c9615dba31794cf0062400e84b2058471fff3d89c9291c24ab19050f209",
+        "claimIds": [
+          "C-T-mbfed-35494800592-1-operator-b"
+        ]
+      }
+    ],
+    "uncertainties": [
+      "Federation proof validates signed transport and bounded execution, not external factual truth."
+    ],
+    "recommendedFollowups": []
+  },
+  "requestHash": "020765a3c907f9eda19dfbf45e9c8fdde282a4e4d3ff9fd19d571748650c9185",
+  "resultHash": "63991039911fe553c132327f1e4fa91e9be2c5e02ee46c9fbd9184528c9209e4",
+  "evidence": {
+    "processor": "operator-b-mesh-adapter-v1",
+    "signedStatementHash": "c4cfb5a193ca7a11ea737b9cf65a982a5f574baeb24fb35003acae17f4ad60f0",
+    "signerFingerprint": "2782565b8ef8aae6461f1de746d7869fde83a2ae0998695a5ec7e6c3ed13ffff"
+  },
+  "canonicalEvidence": {
+    "accepted": {
+      "format": "arca-mesh-signed-statement-v1",
+      "version": 1,
+      "domain": "arca.mesh.request-evidence.v1",
+      "signer": {
+        "format": "arca-mesh-node-identity-v1",
+        "version": 1,
+        "algorithm": "Ed25519",
+        "nodeId": "arca-federation-operator-b",
+        "identityId": "ed25519:16d18f18eb75454e10736958f27fe5b9dc500d82f55b4b6fd4b34ea091cc4b3c",
+        "keyFingerprint": "16d18f18eb75454e10736958f27fe5b9dc500d82f55b4b6fd4b34ea091cc4b3c",
+        "publicKeySpki": "MCowBQYDK2VwAyEA/mmKtFJk16dXNlpVnPt1lLtrr+qfRvhGJ1I1/s6fkmg=",
+        "descriptorHash": "bb46f1ee8c90b24a1e7c5009f1ef86e1001e5483f2e0306c97c18219660d22a6"
+      },
+      "nonce": "mbfed-35494800592-1_accepted",
+      "issuedAt": "2026-09-20T06:40:05.968Z",
+      "expiresAt": "2026-09-20T06:45:05.968Z",
+      "payloadHash": "8e0ea8dc1baa50818da93de642a657be4d40e1ef58d6263180eca5c695a430d7",
+      "payload": {
+        "format": "arca-remote-request-evidence-v1",
+        "version": 1,
+        "stage": "accepted",
+        "nodeId": "arca-federation-operator-b",
+        "requestId": "mbfed-35494800592-1",
+        "jobId": "mbfed-35494800592-1-job",
+        "payloadHash": "020765a3c907f9eda19dfbf45e9c8fdde282a4e4d3ff9fd19d571748650c9185",
+        "ownerBindingHash": "4b8ce59b2b14166c638f114ca0a39aef1e926ca4b69e82e69d0b0990fb802c3d",
+        "evidenceAt": "2026-09-20T06:40:05.968Z"
+      },
+      "signature": "8-BJ4TOj6Pi4GpNiDyS9CwNDtsKbAOtbw2wDEV121GpK83KUTszUxrtaonSQaFNS_Z2u6-6joJdl1Nboa-O4Cg",
+      "statementHash": "eec2f985c97dc0a045f31e0f63658d2ae1aba69df20789d4bf7d618b6d1f610c"
+    },
+    "completed": {
+      "format": "arca-mesh-signed-statement-v1",
+      "version": 1,
+      "domain": "arca.mesh.request-evidence.v1",
+      "signer": {
+        "format": "arca-mesh-node-identity-v1",
+        "version": 1,
+        "algorithm": "Ed25519",
+        "nodeId": "arca-federation-operator-b",
+        "identityId": "ed25519:16d18f18eb75454e10736958f27fe5b9dc500d82f55b4b6fd4b34ea091cc4b3c",
+        "keyFingerprint": "16d18f18eb75454e10736958f27fe5b9dc500d82f55b4b6fd4b34ea091cc4b3c",
+        "publicKeySpki": "MCowBQYDK2VwAyEA/mmKtFJk16dXNlpVnPt1lLtrr+qfRvhGJ1I1/s6fkmg=",
+        "descriptorHash": "bb46f1ee8c90b24a1e7c5009f1ef86e1001e5483f2e0306c97c18219660d22a6"
+      },
+      "nonce": "mbfed-35494800592-1_completed",
+      "issuedAt": "2026-09-20T06:40:05.968Z",
+      "expiresAt": "2026-09-20T06:45:05.968Z",
+      "payloadHash": "8939c7cdeed39346230bef9fd489ac4567dc657ab5b386fdb3c5c84c05ff2348",
+      "payload": {
+        "format": "arca-remote-request-evidence-v1",
+        "version": 1,
+        "stage": "completed",
+        "nodeId": "arca-federation-operator-b",
+        "requestId": "mbfed-35494800592-1",
+        "jobId": "mbfed-35494800592-1-job",
+        "payloadHash": "020765a3c907f9eda19dfbf45e9c8fdde282a4e4d3ff9fd19d571748650c9185",
+        "ownerBindingHash": "4b8ce59b2b14166c638f114ca0a39aef1e926ca4b69e82e69d0b0990fb802c3d",
+        "evidenceAt": "2026-09-20T06:40:05.968Z",
+        "resultHash": "63991039911fe553c132327f1e4fa91e9be2c5e02ee46c9fbd9184528c9209e4",
+        "acceptedStatementHash": "eec2f985c97dc0a045f31e0f63658d2ae1aba69df20789d4bf7d618b6d1f610c"
+      },
+      "signature": "Cl4ehdFJKj5hMQ2aPiQClgIL9OUIgde1B2jVjy1ATfHWbtr61upA9usCfN5K380GZ4iLSpvLcYu5TsfPZ_wkBg",
+      "statementHash": "0277280a591096e975d68fced5b6fa361558960cc1c8f742f3f1271e0ea44612"
+    }
+  }
+}
