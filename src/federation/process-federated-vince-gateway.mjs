@@ -55,7 +55,16 @@ const processed=[];
 
 for(const name of names){
   const path=join(inboxDir,name);
-  const {statement,probe}=await readStatement(path);
+  let statement,probe;
+  try{
+    ({statement,probe}=await readStatement(path));
+  }catch(error){
+    if(String(error?.message||error)==="invalid mesh validity window"){
+      processed.push({stage:"stale",file:name});
+      continue;
+    }
+    throw error;
+  }
 
   if(probe.action===MEGA_BRAIN_DISPATCH_ACTION){
     const task=normalizeMegaBrainTask(probe.params.task);

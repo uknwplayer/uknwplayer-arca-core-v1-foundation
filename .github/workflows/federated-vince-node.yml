@@ -6,6 +6,11 @@ on:
       - feat/federated-vince-node-v0.1
     paths:
       - 'federation/mesh-inbox/*.json'
+      - 'src/federation/process-federated-vince-gateway.mjs'
+      - 'src/federation/protocol.mjs'
+      - 'src/federation/canonical-evidence.mjs'
+      - 'tests/federation-runtime.test.mjs'
+      - '.github/workflows/federated-vince-node.yml'
   workflow_dispatch:
 
 permissions:
