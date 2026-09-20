@@ -1,4 +1,4 @@
-import {assertProbe,createPingResult} from "./protocol.mjs";
+import {assertProbe,createFederationResult} from "./protocol.mjs";
 
 export class FederationOperatorB {
   constructor({trustedOrigins=["arca-federation-operator-a"]}={}){
@@ -7,6 +7,6 @@ export class FederationOperatorB {
   async receive(probe){
     assertProbe(probe);
     if(!this.trustedOrigins.has(probe.originOperatorId))throw new Error("untrusted federation origin");
-    return createPingResult(probe);
+    return createFederationResult(probe);
   }
 }
