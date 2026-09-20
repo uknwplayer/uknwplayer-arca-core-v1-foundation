@@ -5,6 +5,7 @@ import {
   MEGA_BRAIN_DISPATCH_ACTION,
   MEGA_BRAIN_RESULT_SUBMIT_ACTION,
   assertProbe,
+  createMegaBrainResult,
   normalizeMegaBrainDispatchOutput,
   normalizeMegaBrainResultSubmission,
   sha256,
@@ -179,4 +180,19 @@ test("submissão de resultado rejeita binding hash malformado",()=>{
     megaBrainOutput:vinceOutput()
   };
   assert.throws(()=>normalizeMegaBrainResultSubmission(params),/invalid ownerBindingHash/);
+});
+
+test("hash da submissão delegada entra no resultHash assinado por B",()=>{
+  const p=vinceProbe();
+  const delegationStatementHash="d".repeat(64);
+  const result=createMegaBrainResult(p,{
+    megaBrainOutput:vinceOutput(),
+    delegationStatementHash
+  });
+  assert.equal(result.delegationStatementHash,delegationStatementHash);
+  assert.equal(verifyFederationResult(result,p),true);
+  assert.throws(
+    ()=>verifyFederationResult({...result,delegationStatementHash:"e".repeat(64)},p),
+    /result hash mismatch/
+  );
 });

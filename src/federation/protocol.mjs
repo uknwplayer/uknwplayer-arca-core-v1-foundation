@@ -171,7 +171,7 @@ export function createPingResult(probe,{operatorId="arca-federation-operator-b"}
   return {...result,resultHash:sha256(result)};
 }
 
-export function createMegaBrainResult(probe,{operatorId="arca-federation-operator-b",megaBrainOutput}={}){
+export function createMegaBrainResult(probe,{operatorId="arca-federation-operator-b",megaBrainOutput,delegationStatementHash}={}){
   assertProbe(probe);
   if(probe.action!==MEGA_BRAIN_DISPATCH_ACTION)throw new Error("mega brain probe required");
   const task=assertMegaBrainParams(probe.params);
@@ -205,7 +205,18 @@ export function createMegaBrainResult(probe,{operatorId="arca-federation-operato
       recommendedFollowups:[]
     },{task});
   }
-  const result={format:FEDERATION_RESULT_FORMAT,protocolVersion:3,requestId:probe.requestId,jobId:probe.jobId,operatorId,status:"completed",action:MEGA_BRAIN_DISPATCH_ACTION,output,requestHash:probe.payloadHash};
+  const result={
+    format:FEDERATION_RESULT_FORMAT,
+    protocolVersion:3,
+    requestId:probe.requestId,
+    jobId:probe.jobId,
+    operatorId,
+    status:"completed",
+    action:MEGA_BRAIN_DISPATCH_ACTION,
+    output,
+    requestHash:probe.payloadHash,
+    ...(delegationStatementHash===undefined?{}:{delegationStatementHash:hash(delegationStatementHash,"delegationStatementHash")})
+  };
   return {...result,resultHash:sha256(result)};
 }
 

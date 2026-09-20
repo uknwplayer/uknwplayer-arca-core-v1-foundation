@@ -140,7 +140,10 @@ for(const name of names){
     }
 
     const output=ensureVinceOutput(submission.megaBrainOutput,originalTask);
-    const result=createMegaBrainResult(originalProbe,{megaBrainOutput:output});
+    const result=createMegaBrainResult(originalProbe,{
+      megaBrainOutput:output,
+      delegationStatementHash:statement.statementHash
+    });
     const completed=await createCanonicalCompletedEvidence({
       probe:originalProbe,
       result,
