@@ -1,0 +1,48 @@
+name: Federated Vince Gateway — Operator B
+
+on:
+  push:
+    branches:
+      - feat/federated-vince-node-v0.1
+    paths:
+      - 'federation/mesh-inbox/*.json'
+      - 'src/federation/process-federated-vince-gateway.mjs'
+      - 'src/federation/protocol.mjs'
+      - 'src/federation/canonical-evidence.mjs'
+      - 'tests/federation-runtime.test.mjs'
+      - '.github/workflows/federated-vince-node.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: federated-vince-gateway-b
+  cancel-in-progress: false
+
+jobs:
+  gateway:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.18'
+      - name: Run Operator B regression suite
+        run: npm test
+      - name: Verify signed requests and advance federated Vince state
+        env:
+          ARCA_FEDERATION_B_PRIVATE_KEY_PEM: ${{ secrets.ARCA_FEDERATION_B_PRIVATE_KEY_PEM }}
+        run: node src/federation/process-federated-vince-gateway.mjs
+      - name: Persist authorization/completion evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p federation/vince-authorizations federation/outbox
+          git add federation/vince-authorizations federation/outbox
+          git diff --cached --quiet && exit 0
+          git config user.name "arca-federation-operator-b"
+          git config user.email "actions@users.noreply.github.com"
+          git commit -m "federation: advance signed Vince delegation"
+          git push

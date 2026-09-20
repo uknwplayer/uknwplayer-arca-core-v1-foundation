@@ -1,0 +1,42 @@
+{
+  "format": "arca-federated-vince-authorization-v1",
+  "version": 1,
+  "requestId": "mbvince-35498582091-1",
+  "jobId": "mbvince-35498582091-1-job",
+  "payloadHash": "c5aa4f5782a0d72af4c51c471b3d3e6ededf1f1844a9c0ca49e3dd75e4d3277e",
+  "ownerBindingHash": "3e5176b8c2373ca8962585737000eda02844d07d25eb3294482ae25be075628a",
+  "requestStatementHash": "d85ab43b974558a64a5633a3619e05493c49b14068c268afd824b2de6501a487",
+  "logicalNodeId": "node.vince",
+  "accepted": {
+    "format": "arca-mesh-signed-statement-v1",
+    "version": 1,
+    "domain": "arca.mesh.request-evidence.v1",
+    "signer": {
+      "format": "arca-mesh-node-identity-v1",
+      "version": 1,
+      "algorithm": "Ed25519",
+      "nodeId": "arca-federation-operator-b",
+      "identityId": "ed25519:16d18f18eb75454e10736958f27fe5b9dc500d82f55b4b6fd4b34ea091cc4b3c",
+      "keyFingerprint": "16d18f18eb75454e10736958f27fe5b9dc500d82f55b4b6fd4b34ea091cc4b3c",
+      "publicKeySpki": "MCowBQYDK2VwAyEA/mmKtFJk16dXNlpVnPt1lLtrr+qfRvhGJ1I1/s6fkmg=",
+      "descriptorHash": "bb46f1ee8c90b24a1e7c5009f1ef86e1001e5483f2e0306c97c18219660d22a6"
+    },
+    "nonce": "mbvince-35498582091-1_accepted",
+    "issuedAt": "2026-09-20T08:06:45.242Z",
+    "expiresAt": "2026-09-20T08:11:45.242Z",
+    "payloadHash": "1d24fc72a8fdf76f020a824caaf804234e105a2cf98c5f219b6467bd0a36eadf",
+    "payload": {
+      "format": "arca-remote-request-evidence-v1",
+      "version": 1,
+      "stage": "accepted",
+      "nodeId": "arca-federation-operator-b",
+      "requestId": "mbvince-35498582091-1",
+      "jobId": "mbvince-35498582091-1-job",
+      "payloadHash": "c5aa4f5782a0d72af4c51c471b3d3e6ededf1f1844a9c0ca49e3dd75e4d3277e",
+      "ownerBindingHash": "3e5176b8c2373ca8962585737000eda02844d07d25eb3294482ae25be075628a",
+      "evidenceAt": "2026-09-20T08:06:45.242Z"
+    },
+    "signature": "GMe96u8it5UzG3WngjHImf8_9vIcdKRjvEEiQF1QpLJv2tCxsDLvWH1nQJwaXa7eTj273yov1_FE2WZzISq5DQ",
+    "statementHash": "d47f582fe3a40b611a91b7a937916081cdcf094b599c72b48655b3517367be21"
+  }
+}

@@ -1,0 +1,129 @@
+{
+  "format": "arca-federation-result-v1",
+  "protocolVersion": 3,
+  "requestId": "mbvince-35498582091-1",
+  "jobId": "mbvince-35498582091-1-job",
+  "operatorId": "arca-federation-operator-b",
+  "status": "completed",
+  "action": "mega-brain.dispatch",
+  "output": {
+    "format": "arca-mega-brain-dispatch-result-v1",
+    "version": 1,
+    "resultId": "R-T-mbvince-35498582091-1-vince",
+    "missionId": "MBVINCE-mbvince-35498582091-1",
+    "taskId": "T-mbvince-35498582091-1",
+    "nodeId": "node.vince",
+    "claims": [
+      {
+        "claimId": "C-T-mbvince-35498582091-1-vince",
+        "text": "Vince preserved the task as an instruction and performed an epistemic review without promoting its objective to fact."
+      }
+    ],
+    "evidence": [
+      {
+        "evidenceId": "E-T-mbvince-35498582091-1-vince",
+        "sourceRef": "vince://cognitive-trace/T-mbvince-35498582091-1",
+        "contentDigest": "sha256:61561b1d6bfa49f59757ef71411a367b02bd08f5928054b35d68e169c2cd3abb",
+        "claimIds": [
+          "C-T-mbvince-35498582091-1-vince"
+        ]
+      }
+    ],
+    "uncertainties": [
+      "The Mega Brain task objective is an instruction, not external factual evidence.",
+      "Standalone Vince did not convert the objective into a factual belief.",
+      "Vince's bounded Value-of-Information gate favors obtaining independent external evidence."
+    ],
+    "recommendedFollowups": [
+      {
+        "objective": "Collect independent external evidence relevant to: Review this federated mission instruction epistemically and decide whether independent evidence should be requested before factual adoption.",
+        "requiredCapabilities": [
+          "research"
+        ]
+      }
+    ]
+  },
+  "requestHash": "c5aa4f5782a0d72af4c51c471b3d3e6ededf1f1844a9c0ca49e3dd75e4d3277e",
+  "resultHash": "cad302be73ee089d4620e9b15cb182ba4c6a18b98075f1f9cc0625207e662913",
+  "evidence": {
+    "processor": "operator-b-federated-vince-gateway-v1",
+    "originalRequestStatementHash": "d85ab43b974558a64a5633a3619e05493c49b14068c268afd824b2de6501a487",
+    "resultSubmissionStatementHash": "a4c166da5bcef367046e6e24de78cd8a155694cdeb097c5186bc169571a71ce5",
+    "resultSubmitSignerFingerprint": "2782565b8ef8aae6461f1de746d7869fde83a2ae0998695a5ec7e6c3ed13ffff"
+  },
+  "canonicalEvidence": {
+    "accepted": {
+      "format": "arca-mesh-signed-statement-v1",
+      "version": 1,
+      "domain": "arca.mesh.request-evidence.v1",
+      "signer": {
+        "format": "arca-mesh-node-identity-v1",
+        "version": 1,
+        "algorithm": "Ed25519",
+        "nodeId": "arca-federation-operator-b",
+        "identityId": "ed25519:16d18f18eb75454e10736958f27fe5b9dc500d82f55b4b6fd4b34ea091cc4b3c",
+        "keyFingerprint": "16d18f18eb75454e10736958f27fe5b9dc500d82f55b4b6fd4b34ea091cc4b3c",
+        "publicKeySpki": "MCowBQYDK2VwAyEA/mmKtFJk16dXNlpVnPt1lLtrr+qfRvhGJ1I1/s6fkmg=",
+        "descriptorHash": "bb46f1ee8c90b24a1e7c5009f1ef86e1001e5483f2e0306c97c18219660d22a6"
+      },
+      "nonce": "mbvince-35498582091-1_accepted",
+      "issuedAt": "2026-09-20T08:06:45.242Z",
+      "expiresAt": "2026-09-20T08:11:45.242Z",
+      "payloadHash": "1d24fc72a8fdf76f020a824caaf804234e105a2cf98c5f219b6467bd0a36eadf",
+      "payload": {
+        "format": "arca-remote-request-evidence-v1",
+        "version": 1,
+        "stage": "accepted",
+        "nodeId": "arca-federation-operator-b",
+        "requestId": "mbvince-35498582091-1",
+        "jobId": "mbvince-35498582091-1-job",
+        "payloadHash": "c5aa4f5782a0d72af4c51c471b3d3e6ededf1f1844a9c0ca49e3dd75e4d3277e",
+        "ownerBindingHash": "3e5176b8c2373ca8962585737000eda02844d07d25eb3294482ae25be075628a",
+        "evidenceAt": "2026-09-20T08:06:45.242Z"
+      },
+      "signature": "GMe96u8it5UzG3WngjHImf8_9vIcdKRjvEEiQF1QpLJv2tCxsDLvWH1nQJwaXa7eTj273yov1_FE2WZzISq5DQ",
+      "statementHash": "d47f582fe3a40b611a91b7a937916081cdcf094b599c72b48655b3517367be21"
+    },
+    "completed": {
+      "format": "arca-mesh-signed-statement-v1",
+      "version": 1,
+      "domain": "arca.mesh.request-evidence.v1",
+      "signer": {
+        "format": "arca-mesh-node-identity-v1",
+        "version": 1,
+        "algorithm": "Ed25519",
+        "nodeId": "arca-federation-operator-b",
+        "identityId": "ed25519:16d18f18eb75454e10736958f27fe5b9dc500d82f55b4b6fd4b34ea091cc4b3c",
+        "keyFingerprint": "16d18f18eb75454e10736958f27fe5b9dc500d82f55b4b6fd4b34ea091cc4b3c",
+        "publicKeySpki": "MCowBQYDK2VwAyEA/mmKtFJk16dXNlpVnPt1lLtrr+qfRvhGJ1I1/s6fkmg=",
+        "descriptorHash": "bb46f1ee8c90b24a1e7c5009f1ef86e1001e5483f2e0306c97c18219660d22a6"
+      },
+      "nonce": "mbvince-35498582091-1_completed",
+      "issuedAt": "2026-09-20T08:07:01.145Z",
+      "expiresAt": "2026-09-20T08:12:01.145Z",
+      "payloadHash": "8afea5415b2c213f50c4724fad0ad8bce1b41cd1f1f25a0e228e460b4e5d56f1",
+      "payload": {
+        "format": "arca-remote-request-evidence-v1",
+        "version": 1,
+        "stage": "completed",
+        "nodeId": "arca-federation-operator-b",
+        "requestId": "mbvince-35498582091-1",
+        "jobId": "mbvince-35498582091-1-job",
+        "payloadHash": "c5aa4f5782a0d72af4c51c471b3d3e6ededf1f1844a9c0ca49e3dd75e4d3277e",
+        "ownerBindingHash": "3e5176b8c2373ca8962585737000eda02844d07d25eb3294482ae25be075628a",
+        "evidenceAt": "2026-09-20T08:07:01.145Z",
+        "resultHash": "cad302be73ee089d4620e9b15cb182ba4c6a18b98075f1f9cc0625207e662913",
+        "acceptedStatementHash": "d47f582fe3a40b611a91b7a937916081cdcf094b599c72b48655b3517367be21"
+      },
+      "signature": "m32TPO28lT8VZF_UGpEfGnuHDruQipxIa9aBA3NR7kX5jYacUVKsQFd7IY22glO3LTGtFWXXic5-1YpshM0bAQ",
+      "statementHash": "a9def01ec6b31de199f3b408e832bc1eded808ba1d2d3d9871ca848ef57f3fd7"
+    }
+  },
+  "delegationEvidence": {
+    "format": "arca-federated-vince-delegation-v1",
+    "version": 1,
+    "authorizationStatementHash": "d47f582fe3a40b611a91b7a937916081cdcf094b599c72b48655b3517367be21",
+    "resultSubmissionStatementHash": "a4c166da5bcef367046e6e24de78cd8a155694cdeb097c5186bc169571a71ce5",
+    "cognitiveEvidenceSource": "vince://cognitive-trace/T-mbvince-35498582091-1"
+  }
+}

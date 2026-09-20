@@ -1,0 +1,42 @@
+{
+  "format": "arca-federated-vince-authorization-v1",
+  "version": 1,
+  "requestId": "mbvince-35498808066-1",
+  "jobId": "mbvince-35498808066-1-job",
+  "payloadHash": "657f98455bfa9819e97db0de1811cf16c0a0e07eb34f8831b021e26083764aa4",
+  "ownerBindingHash": "9e24031375ffeb6a09fccd2ccc7b2fe19699771bfc89a29f52a708191baf16a8",
+  "requestStatementHash": "ef0c2e5a15afb10ac62b6340082367fe36c6219cfb2e61cc34e5a99797e198fb",
+  "logicalNodeId": "node.vince",
+  "accepted": {
+    "format": "arca-mesh-signed-statement-v1",
+    "version": 1,
+    "domain": "arca.mesh.request-evidence.v1",
+    "signer": {
+      "format": "arca-mesh-node-identity-v1",
+      "version": 1,
+      "algorithm": "Ed25519",
+      "nodeId": "arca-federation-operator-b",
+      "identityId": "ed25519:16d18f18eb75454e10736958f27fe5b9dc500d82f55b4b6fd4b34ea091cc4b3c",
+      "keyFingerprint": "16d18f18eb75454e10736958f27fe5b9dc500d82f55b4b6fd4b34ea091cc4b3c",
+      "publicKeySpki": "MCowBQYDK2VwAyEA/mmKtFJk16dXNlpVnPt1lLtrr+qfRvhGJ1I1/s6fkmg=",
+      "descriptorHash": "bb46f1ee8c90b24a1e7c5009f1ef86e1001e5483f2e0306c97c18219660d22a6"
+    },
+    "nonce": "mbvince-35498808066-1_accepted",
+    "issuedAt": "2026-09-20T08:10:22.970Z",
+    "expiresAt": "2026-09-20T08:15:22.970Z",
+    "payloadHash": "ac7802a5804afe289853d4e5031acfa6f033b9c341a7188cf8f07b99746c1a60",
+    "payload": {
+      "format": "arca-remote-request-evidence-v1",
+      "version": 1,
+      "stage": "accepted",
+      "nodeId": "arca-federation-operator-b",
+      "requestId": "mbvince-35498808066-1",
+      "jobId": "mbvince-35498808066-1-job",
+      "payloadHash": "657f98455bfa9819e97db0de1811cf16c0a0e07eb34f8831b021e26083764aa4",
+      "ownerBindingHash": "9e24031375ffeb6a09fccd2ccc7b2fe19699771bfc89a29f52a708191baf16a8",
+      "evidenceAt": "2026-09-20T08:10:22.970Z"
+    },
+    "signature": "fOBzfuQsObJFRYUT4_2GeIXwnyyrG3okEvHZNygU53aS-NQGLcH-3WasXyE_c-V2sdTqAjcmx487xG7MxuwyDQ",
+    "statementHash": "375382d102015b667f370a0af1dfda21ec26ad71b6352b1ed5932589561470a2"
+  }
+}
