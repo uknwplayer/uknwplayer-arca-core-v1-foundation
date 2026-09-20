@@ -1,0 +1,47 @@
+{
+  "format": "arca-mesh-signed-statement-v1",
+  "version": 1,
+  "domain": "arca.mesh.request-evidence.v1",
+  "signer": {
+    "format": "arca-mesh-node-identity-v1",
+    "version": 1,
+    "algorithm": "Ed25519",
+    "nodeId": "arca-federation-operator-a",
+    "identityId": "ed25519:2782565b8ef8aae6461f1de746d7869fde83a2ae0998695a5ec7e6c3ed13ffff",
+    "keyFingerprint": "2782565b8ef8aae6461f1de746d7869fde83a2ae0998695a5ec7e6c3ed13ffff",
+    "publicKeySpki": "MCowBQYDK2VwAyEAYIFfFtyt4PFgs/mpnP/lQbemPc11FFJe3T5bXnyeJo4=",
+    "descriptorHash": "95fee7de0f7cd844df3d9aef52a9b8b21ad2f10e5afaae9787ee113871ad1db8"
+  },
+  "nonce": "oy_jI29cU_QLZlKErDWSELX3",
+  "issuedAt": "2026-09-20T08:05:15.083Z",
+  "expiresAt": "2026-09-20T08:15:15.083Z",
+  "payloadHash": "e8a64209499ee34b501e148105481b877f73adbe0f21efff87fb725d5db3b268",
+  "payload": {
+    "format": "arca-federation-probe-v1",
+    "protocolVersion": 3,
+    "requestId": "mbvince-35498582091-1",
+    "jobId": "mbvince-35498582091-1-job",
+    "originOperatorId": "arca-federation-operator-a",
+    "targetOperatorId": "arca-federation-operator-b",
+    "action": "mega-brain.dispatch",
+    "params": {
+      "task": {
+        "format": "arca-mega-brain-task-v1",
+        "version": 1,
+        "missionId": "MBVINCE-mbvince-35498582091-1",
+        "taskId": "T-mbvince-35498582091-1",
+        "objective": "Review this federated mission instruction epistemically and decide whether independent evidence should be requested before factual adoption.",
+        "requiredCapabilities": [
+          "critique"
+        ],
+        "dependencies": [],
+        "assignedNodeId": "node.vince",
+        "createdFromResultId": null
+      }
+    },
+    "payloadHash": "c5aa4f5782a0d72af4c51c471b3d3e6ededf1f1844a9c0ca49e3dd75e4d3277e",
+    "ownerBindingHash": "3e5176b8c2373ca8962585737000eda02844d07d25eb3294482ae25be075628a"
+  },
+  "signature": "VFy7SEAJffyJ6uKqiytpI692janWhRIuOEZOX4Q4184To7qeiR0LruFJmUUb2KhxD6nUnvVV0OhOnej8BcDCCA",
+  "statementHash": "d85ab43b974558a64a5633a3619e05493c49b14068c268afd824b2de6501a487"
+}
