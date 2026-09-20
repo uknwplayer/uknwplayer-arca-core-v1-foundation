@@ -1,0 +1,75 @@
+{
+  "format": "arca-mesh-signed-statement-v1",
+  "version": 1,
+  "domain": "arca.mesh.request-evidence.v1",
+  "signer": {
+    "format": "arca-mesh-node-identity-v1",
+    "version": 1,
+    "algorithm": "Ed25519",
+    "nodeId": "arca-federation-operator-a",
+    "identityId": "ed25519:2782565b8ef8aae6461f1de746d7869fde83a2ae0998695a5ec7e6c3ed13ffff",
+    "keyFingerprint": "2782565b8ef8aae6461f1de746d7869fde83a2ae0998695a5ec7e6c3ed13ffff",
+    "publicKeySpki": "MCowBQYDK2VwAyEAYIFfFtyt4PFgs/mpnP/lQbemPc11FFJe3T5bXnyeJo4=",
+    "descriptorHash": "95fee7de0f7cd844df3d9aef52a9b8b21ad2f10e5afaae9787ee113871ad1db8"
+  },
+  "nonce": "xd2UlGEJHtiOfb-N1ahjyt2d",
+  "issuedAt": "2026-09-20T08:10:26.790Z",
+  "expiresAt": "2026-09-20T08:20:26.790Z",
+  "payloadHash": "3fe6446b78953732188236d91a9788860d12cf43d64ed9d82b1a1b7ec3e5e24e",
+  "payload": {
+    "format": "arca-federation-probe-v1",
+    "protocolVersion": 3,
+    "requestId": "mbvince-35498808066-1-result",
+    "jobId": "mbvince-35498808066-1-job-result",
+    "originOperatorId": "arca-federation-operator-a",
+    "targetOperatorId": "arca-federation-operator-b",
+    "action": "mega-brain.result.submit",
+    "params": {
+      "originalRequestId": "mbvince-35498808066-1",
+      "originalJobId": "mbvince-35498808066-1-job",
+      "originalPayloadHash": "657f98455bfa9819e97db0de1811cf16c0a0e07eb34f8831b021e26083764aa4",
+      "ownerBindingHash": "9e24031375ffeb6a09fccd2ccc7b2fe19699771bfc89a29f52a708191baf16a8",
+      "acceptedStatementHash": "375382d102015b667f370a0af1dfda21ec26ad71b6352b1ed5932589561470a2",
+      "megaBrainOutput": {
+        "format": "arca-mega-brain-dispatch-result-v1",
+        "version": 1,
+        "resultId": "R-T-mbvince-35498808066-1-vince",
+        "missionId": "MBVINCE-mbvince-35498808066-1",
+        "taskId": "T-mbvince-35498808066-1",
+        "nodeId": "node.vince",
+        "claims": [
+          {
+            "claimId": "C-T-mbvince-35498808066-1-vince",
+            "text": "Vince preserved the task as an instruction and performed an epistemic review without promoting its objective to fact."
+          }
+        ],
+        "evidence": [
+          {
+            "evidenceId": "E-T-mbvince-35498808066-1-vince",
+            "sourceRef": "vince://cognitive-trace/T-mbvince-35498808066-1",
+            "contentDigest": "sha256:176b296efaad30cd50e522deb893e76ac74e6d10a75e9daa1d0e87ccd5ad3b58",
+            "claimIds": [
+              "C-T-mbvince-35498808066-1-vince"
+            ]
+          }
+        ],
+        "uncertainties": [
+          "The Mega Brain task objective is an instruction, not external factual evidence.",
+          "Standalone Vince did not convert the objective into a factual belief.",
+          "Vince's bounded Value-of-Information gate favors obtaining independent external evidence."
+        ],
+        "recommendedFollowups": [
+          {
+            "objective": "Collect independent external evidence relevant to: Review this federated mission instruction epistemically and decide whether independent evidence should be requested before factual adoption.",
+            "requiredCapabilities": [
+              "research"
+            ]
+          }
+        ]
+      }
+    },
+    "payloadHash": "bc304fc61f624f5efc5974dbf3bdaa789fc9582004e8ec54f1a6ca223847ea4f"
+  },
+  "signature": "pquOQZUMXvuM9228iBGXP0E-_-BrshIMQSBclL99lDVMhRjLJHfNJ2Vc7OGbWthaGB6HNMnJvpuwLi4ByOxKDg",
+  "statementHash": "4c74cf1b8da5488131d2a101c53ac7e8b62243ed87cc98183d47e13b2eb39a5d"
+}
