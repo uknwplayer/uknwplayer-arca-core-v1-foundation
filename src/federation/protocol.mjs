@@ -2,6 +2,9 @@ import {createHash} from "node:crypto";
 
 const SAFE=/^[A-Za-z0-9._-]{1,120}$/;
 const CAPABILITY_MAX=160;
+const MAX_TEXT=12000;
+const MAX_SOURCE_REF=2000;
+const MAX_DIGEST=512;
 export const FEDERATION_PROBE_FORMAT="arca-federation-probe-v1";
 export const FEDERATION_RESULT_FORMAT="arca-federation-result-v1";
 export const MEGA_BRAIN_TASK_FORMAT="arca-mega-brain-task-v1";
@@ -18,12 +21,20 @@ export function sha256(value){
 }
 function safe(value,label){if(typeof value!=="string"||!SAFE.test(value))throw new Error("invalid "+label);return value;}
 function plain(value){return !!value&&typeof value==="object"&&!Array.isArray(value)}
-function exactKeys(value,allowed,label){for(const key of Object.keys(value))if(!allowed.has(key))throw new Error(label+" contains unsupported field: "+key)}
-function stringArray(value,label,{maxItems=64,safeIds=false}={}){
+function exactKeys(value,allowed,label){
+  if(!plain(value))throw new Error(label+" object required");
+  for(const key of Object.keys(value))if(!allowed.has(key))throw new Error(label+" contains unsupported field: "+key);
+  for(const key of allowed)if(!(key in value))throw new Error(label+" missing required field: "+key);
+}
+function boundedText(value,label,max=MAX_TEXT){
+  if(typeof value!=="string"||!value.trim()||value.length>max)throw new Error("invalid "+label);
+  return value;
+}
+function stringArray(value,label,{maxItems=64,safeIds=false,maxLength=CAPABILITY_MAX}={}){
   if(!Array.isArray(value)||value.length>maxItems)throw new Error("invalid "+label);
   const out=[];const seen=new Set();
   for(const raw of value){
-    if(typeof raw!=="string"||!raw.trim()||raw.length>CAPABILITY_MAX)throw new Error("invalid "+label);
+    if(typeof raw!=="string"||!raw.trim()||raw.length>maxLength)throw new Error("invalid "+label);
     const item=raw.trim();if(safeIds&&!SAFE.test(item))throw new Error("invalid "+label);
     if(seen.has(item))throw new Error("duplicate "+label);
     seen.add(item);out.push(item);
@@ -32,28 +43,89 @@ function stringArray(value,label,{maxItems=64,safeIds=false}={}){
 }
 
 export function normalizeMegaBrainTask(value){
-  if(!plain(value))throw new Error("mega brain task required");
   exactKeys(value,new Set(["format","version","missionId","taskId","objective","requiredCapabilities","dependencies","assignedNodeId","createdFromResultId"]),"mega brain task");
   if(value.format!==MEGA_BRAIN_TASK_FORMAT||value.version!==1)throw new Error("unsupported mega brain task");
-  const objective=String(value.objective??"");
-  if(!objective.trim()||objective.length>12000)throw new Error("invalid mega brain objective");
   return Object.freeze({
     format:MEGA_BRAIN_TASK_FORMAT,
     version:1,
     missionId:safe(value.missionId,"missionId"),
     taskId:safe(value.taskId,"taskId"),
-    objective,
+    objective:boundedText(value.objective,"mega brain objective"),
     requiredCapabilities:stringArray(value.requiredCapabilities,"requiredCapabilities"),
-    dependencies:stringArray(value.dependencies,"dependencies",{safeIds:true}),
+    dependencies:stringArray(value.dependencies,"dependencies",{safeIds:true,maxLength:120}),
     assignedNodeId:safe(value.assignedNodeId,"assignedNodeId"),
     createdFromResultId:value.createdFromResultId==null?null:safe(value.createdFromResultId,"createdFromResultId")
   });
 }
 
 function assertMegaBrainParams(params){
-  if(!plain(params))throw new Error("mega brain params required");
   exactKeys(params,new Set(["task"]),"mega brain params");
   return normalizeMegaBrainTask(params.task);
+}
+
+function normalizeClaim(value){
+  exactKeys(value,new Set(["claimId","text"]),"mega brain claim");
+  return Object.freeze({
+    claimId:safe(value.claimId,"claimId"),
+    text:boundedText(value.text,"claim text")
+  });
+}
+function normalizeEvidence(value){
+  exactKeys(value,new Set(["evidenceId","sourceRef","contentDigest","claimIds"]),"mega brain evidence");
+  return Object.freeze({
+    evidenceId:safe(value.evidenceId,"evidenceId"),
+    sourceRef:boundedText(value.sourceRef,"evidence sourceRef",MAX_SOURCE_REF),
+    contentDigest:boundedText(value.contentDigest,"evidence contentDigest",MAX_DIGEST),
+    claimIds:stringArray(value.claimIds,"claimIds",{safeIds:true,maxLength:120,maxItems:128})
+  });
+}
+function normalizeFollowup(value){
+  exactKeys(value,new Set(["objective","requiredCapabilities"]),"mega brain followup");
+  return Object.freeze({
+    objective:boundedText(value.objective,"followup objective"),
+    requiredCapabilities:stringArray(value.requiredCapabilities,"followup requiredCapabilities")
+  });
+}
+
+export function normalizeMegaBrainDispatchOutput(value,{task}={}){
+  const normalizedTask=normalizeMegaBrainTask(task);
+  exactKeys(value,new Set([
+    "format","version","resultId","missionId","taskId","nodeId",
+    "claims","evidence","uncertainties","recommendedFollowups"
+  ]),"mega brain dispatch output");
+  if(value.format!==MEGA_BRAIN_DISPATCH_RESULT_FORMAT||value.version!==1)throw new Error("unsupported mega brain dispatch output");
+  if(value.missionId!==normalizedTask.missionId)throw new Error("mega brain output mission mismatch");
+  if(value.taskId!==normalizedTask.taskId)throw new Error("mega brain output task mismatch");
+  if(value.nodeId!==normalizedTask.assignedNodeId)throw new Error("mega brain output node mismatch");
+  if(!Array.isArray(value.claims)||value.claims.length>128)throw new Error("invalid mega brain claims");
+  if(!Array.isArray(value.evidence)||value.evidence.length>128)throw new Error("invalid mega brain evidence");
+  if(!Array.isArray(value.uncertainties)||value.uncertainties.length>64)throw new Error("invalid mega brain uncertainties");
+  if(!Array.isArray(value.recommendedFollowups)||value.recommendedFollowups.length>32)throw new Error("invalid mega brain followups");
+
+  const claims=value.claims.map(normalizeClaim);
+  const claimIds=new Set();
+  for(const item of claims){
+    if(claimIds.has(item.claimId))throw new Error("duplicate mega brain claimId");
+    claimIds.add(item.claimId);
+  }
+  const evidence=value.evidence.map(normalizeEvidence);
+  const evidenceIds=new Set();
+  for(const item of evidence){
+    if(evidenceIds.has(item.evidenceId))throw new Error("duplicate mega brain evidenceId");
+    evidenceIds.add(item.evidenceId);
+  }
+  return Object.freeze({
+    format:MEGA_BRAIN_DISPATCH_RESULT_FORMAT,
+    version:1,
+    resultId:safe(value.resultId,"resultId"),
+    missionId:normalizedTask.missionId,
+    taskId:normalizedTask.taskId,
+    nodeId:normalizedTask.assignedNodeId,
+    claims:Object.freeze(claims),
+    evidence:Object.freeze(evidence),
+    uncertainties:Object.freeze(value.uncertainties.map(v=>boundedText(v,"uncertainty",4000))),
+    recommendedFollowups:Object.freeze(value.recommendedFollowups.map(normalizeFollowup))
+  });
 }
 
 export function assertProbe(value){
@@ -78,34 +150,40 @@ export function createPingResult(probe,{operatorId="arca-federation-operator-b"}
   return {...result,resultHash:sha256(result)};
 }
 
-export function createMegaBrainResult(probe,{operatorId="arca-federation-operator-b"}={}){
+export function createMegaBrainResult(probe,{operatorId="arca-federation-operator-b",megaBrainOutput}={}){
   assertProbe(probe);
   if(probe.action!==MEGA_BRAIN_DISPATCH_ACTION)throw new Error("mega brain probe required");
   const task=assertMegaBrainParams(probe.params);
-  const claimId="C-"+task.taskId+"-operator-b";
-  const evidenceId="E-"+task.taskId+"-operator-b";
-  const output={
-    format:MEGA_BRAIN_DISPATCH_RESULT_FORMAT,
-    version:1,
-    resultId:"R-"+task.taskId+"-operator-b",
-    missionId:task.missionId,
-    taskId:task.taskId,
-    nodeId:task.assignedNodeId,
-    claims:[{
-      claimId,
-      text:"Federated Operator B processed the bounded Mega Brain task."
-    }],
-    evidence:[{
-      evidenceId,
-      sourceRef:"federation://operator-b/"+task.taskId,
-      contentDigest:"sha256:"+sha256({requestId:probe.requestId,taskId:task.taskId,operatorId}),
-      claimIds:[claimId]
-    }],
-    uncertainties:[
-      "Federation proof validates signed transport and bounded execution, not external factual truth."
-    ],
-    recommendedFollowups:[]
-  };
+  let output;
+  if(megaBrainOutput!==undefined){
+    output=normalizeMegaBrainDispatchOutput(megaBrainOutput,{task});
+  }else{
+    if(task.assignedNodeId==="node.vince")throw new Error("VINCE_COGNITIVE_RESULT_REQUIRED");
+    const claimId="C-"+task.taskId+"-operator-b";
+    const evidenceId="E-"+task.taskId+"-operator-b";
+    output=normalizeMegaBrainDispatchOutput({
+      format:MEGA_BRAIN_DISPATCH_RESULT_FORMAT,
+      version:1,
+      resultId:"R-"+task.taskId+"-operator-b",
+      missionId:task.missionId,
+      taskId:task.taskId,
+      nodeId:task.assignedNodeId,
+      claims:[{
+        claimId,
+        text:"Federated Operator B processed the bounded Mega Brain task."
+      }],
+      evidence:[{
+        evidenceId,
+        sourceRef:"federation://operator-b/"+task.taskId,
+        contentDigest:"sha256:"+sha256({requestId:probe.requestId,taskId:task.taskId,operatorId}),
+        claimIds:[claimId]
+      }],
+      uncertainties:[
+        "Federation proof validates signed transport and bounded execution, not external factual truth."
+      ],
+      recommendedFollowups:[]
+    },{task});
+  }
   const result={format:FEDERATION_RESULT_FORMAT,protocolVersion:3,requestId:probe.requestId,jobId:probe.jobId,operatorId,status:"completed",action:MEGA_BRAIN_DISPATCH_ACTION,output,requestHash:probe.payloadHash};
   return {...result,resultHash:sha256(result)};
 }
@@ -123,10 +201,7 @@ export function verifyFederationResult(value,probe){
   const {resultHash,...body}=value;
   if(resultHash!==sha256(body))throw new Error("federation result hash mismatch");
   if(probe.action===MEGA_BRAIN_DISPATCH_ACTION){
-    const task=normalizeMegaBrainTask(probe.params.task);
-    const output=value.output;
-    if(!plain(output)||output.format!==MEGA_BRAIN_DISPATCH_RESULT_FORMAT||output.version!==1)throw new Error("invalid mega brain federation output");
-    if(output.missionId!==task.missionId||output.taskId!==task.taskId||output.nodeId!==task.assignedNodeId)throw new Error("mega brain federation output correlation mismatch");
+    normalizeMegaBrainDispatchOutput(value.output,{task:probe.params.task});
   }
   return true;
 }

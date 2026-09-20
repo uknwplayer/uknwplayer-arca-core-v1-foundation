@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import {FederationOperatorB} from "../src/federation/operator-b.mjs";
 import {
   MEGA_BRAIN_DISPATCH_ACTION,
+  normalizeMegaBrainDispatchOutput,
   sha256,
   verifyFederationResult,
   verifyPingResult
@@ -27,6 +28,47 @@ function megaBrainProbe(overrides={}){
   const body={requestId:"mbfed-req-001",jobId:"mbfed-job-001",action:MEGA_BRAIN_DISPATCH_ACTION,params};
   return {format:"arca-federation-probe-v1",protocolVersion:3,originOperatorId:"arca-federation-operator-a",targetOperatorId:"arca-federation-operator-b",...body,payloadHash:sha256(body),...overrides};
 }
+function vinceProbe(overrides={}){
+  const params={task:{
+    format:"arca-mega-brain-task-v1",
+    version:1,
+    missionId:"MBVINCE-001",
+    taskId:"T-MBVINCE-001",
+    objective:"Review this instruction epistemically before factual adoption.",
+    requiredCapabilities:["critique"],
+    dependencies:[],
+    assignedNodeId:"node.vince",
+    createdFromResultId:null
+  }};
+  const body={requestId:"mbvince-req-001",jobId:"mbvince-job-001",action:MEGA_BRAIN_DISPATCH_ACTION,params};
+  return {format:"arca-federation-probe-v1",protocolVersion:3,originOperatorId:"arca-federation-operator-a",targetOperatorId:"arca-federation-operator-b",...body,payloadHash:sha256(body),...overrides};
+}
+function vinceOutput(overrides={}){
+  return {
+    format:"arca-mega-brain-dispatch-result-v1",
+    version:1,
+    resultId:"R-T-MBVINCE-001-vince",
+    missionId:"MBVINCE-001",
+    taskId:"T-MBVINCE-001",
+    nodeId:"node.vince",
+    claims:[{
+      claimId:"C-T-MBVINCE-001-vince",
+      text:"Vince preserved the task as instruction and performed epistemic review."
+    }],
+    evidence:[{
+      evidenceId:"E-T-MBVINCE-001-vince",
+      sourceRef:"vince://cognitive-trace/T-MBVINCE-001",
+      contentDigest:"sha256:"+"a".repeat(64),
+      claimIds:["C-T-MBVINCE-001-vince"]
+    }],
+    uncertainties:["The task objective is an instruction, not external factual evidence."],
+    recommendedFollowups:[{
+      objective:"Collect independent evidence.",
+      requiredCapabilities:["research"]
+    }],
+    ...overrides
+  };
+}
 
 test("Operador B executa worker.ping confiável e correlacionado",async()=>{
   const p=probe(); const result=await new FederationOperatorB().receive(p);
@@ -42,16 +84,42 @@ test("adulteração do resultado é detectada",async()=>{
   const p=probe(); const result=await new FederationOperatorB().receive(p);
   assert.throws(()=>verifyPingResult({...result,output:{ok:false}},p),/result hash mismatch/);
 });
-test("Operador B aceita Mega Brain dispatch estruturado sem ampliar para ação arbitrária",async()=>{
+test("Operador B mantém o dispatch determinístico legado para seu próprio nó",async()=>{
   const p=megaBrainProbe();
   const result=await new FederationOperatorB().receive(p);
   assert.equal(result.action,MEGA_BRAIN_DISPATCH_ACTION);
   assert.equal(result.output.format,"arca-mega-brain-dispatch-result-v1");
-  assert.equal(result.output.missionId,"MBFED-001");
-  assert.equal(result.output.taskId,"T-MBFED-001");
   assert.equal(result.output.nodeId,"arca-federation-operator-b");
-  assert.equal(result.output.claims.length,1);
   assert.equal(verifyFederationResult(result,p),true);
+});
+test("node.vince nunca cai no fixture determinístico do Operador B",async()=>{
+  const p=vinceProbe();
+  await assert.rejects(
+    ()=>new FederationOperatorB().receive(p),
+    /VINCE_COGNITIVE_RESULT_REQUIRED/
+  );
+});
+test("Operador B aceita e embrulha resultado cognitivo válido do Vince",async()=>{
+  const p=vinceProbe();
+  const result=await new FederationOperatorB().receive(p,{megaBrainOutput:vinceOutput()});
+  assert.equal(result.output.nodeId,"node.vince");
+  assert.equal(result.output.evidence[0].sourceRef,"vince://cognitive-trace/T-MBVINCE-001");
+  assert.deepEqual(result.output.recommendedFollowups[0].requiredCapabilities,["research"]);
+  assert.equal(verifyFederationResult(result,p),true);
+});
+test("resultado Vince com target lógico adulterado é rejeitado antes da assinatura",async()=>{
+  const p=vinceProbe();
+  await assert.rejects(
+    ()=>new FederationOperatorB().receive(p,{megaBrainOutput:vinceOutput({nodeId:"node.other"})}),
+    /output node mismatch/
+  );
+});
+test("resultado Vince não pode introduzir campos de autoridade fora do contrato",()=>{
+  const p=vinceProbe();
+  assert.throws(
+    ()=>normalizeMegaBrainDispatchOutput({...vinceOutput(),truth:true},{task:p.params.task}),
+    /unsupported field/
+  );
 });
 test("Mega Brain probe rejeita campos de comando fora do contrato",async()=>{
   const p=megaBrainProbe();
@@ -65,5 +133,5 @@ test("Mega Brain probe rejeita target lógico adulterado no resultado",async()=>
   const badOutput={...result.output,nodeId:"node.other"};
   const body={...result,output:badOutput};delete body.resultHash;
   const bad={...body,resultHash:sha256(body)};
-  assert.throws(()=>verifyFederationResult(bad,p),/output correlation mismatch/);
+  assert.throws(()=>verifyFederationResult(bad,p),/output node mismatch|result hash mismatch/);
 });

@@ -9,7 +9,13 @@ const input=process.argv[2];if(!input)throw new Error("arquivo de inbox obrigat√
 const trust=JSON.parse(await readFile(new URL("../../federation/trust/operator-a.json",import.meta.url),"utf8"));
 const statement=JSON.parse(await readFile(input,"utf8"));
 const probe=verifyCanonicalMeshProbe(statement,{trustedIdentity:trust});
-const result=await new FederationOperatorB().receive(probe);
+
+let megaBrainOutput;
+const resultFile=process.env.ARCA_FEDERATED_MEGA_BRAIN_RESULT_FILE;
+if(resultFile){
+  megaBrainOutput=JSON.parse(await readFile(resultFile,"utf8"));
+}
+const result=await new FederationOperatorB().receive(probe,{megaBrainOutput});
 let persisted={...result,evidence:{processor:"operator-b-mesh-adapter-v1",signedStatementHash:statement.statementHash,signerFingerprint:statement.signer.keyFingerprint}};
 const pem=process.env.ARCA_FEDERATION_B_PRIVATE_KEY_PEM;
 if(pem){
@@ -20,4 +26,15 @@ if(pem){
 const output=new URL("../../federation/outbox/"+basename(input),import.meta.url);
 await mkdir(dirname(output.pathname),{recursive:true});
 await writeFile(output,JSON.stringify(persisted,null,2)+"\n",{flag:"wx"});
-console.log(JSON.stringify({requestId:probe.requestId,status:result.status,resultHash:result.resultHash,statementHash:statement.statementHash,signed:Boolean(persisted.canonicalEvidence),canonicalEvidence:Boolean(persisted.canonicalEvidence),output:output.pathname}));
+console.log(JSON.stringify({
+  requestId:probe.requestId,
+  status:result.status,
+  action:result.action,
+  logicalNodeId:result.output?.nodeId??null,
+  resultHash:result.resultHash,
+  megaBrainResultId:result.output?.resultId??null,
+  statementHash:statement.statementHash,
+  signed:Boolean(persisted.canonicalEvidence),
+  canonicalEvidence:Boolean(persisted.canonicalEvidence),
+  output:output.pathname
+}));
